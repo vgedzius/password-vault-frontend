@@ -25,8 +25,8 @@ type ComponentClassNames =
 export interface HeaderProps {
   user?: User;
   loading: boolean;
-  logout: () => void;
-  showLogin: () => void;
+  onLogout: () => void;
+  onShowLogin: () => void;
 }
 
 export const styles: StyleRulesCallback = (theme: Theme) => ({
@@ -48,7 +48,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
   };
 
   public render() {
-    const { classes, user, showLogin } = this.props;
+    const { classes, user, onShowLogin } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const AccountLink = (props: any) => <Link to="/account" {...props} />
@@ -86,10 +86,10 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
                 onClose={this.closeMenu}
               >
                 <MenuItem onClick={this.closeMenu} component={AccountLink}>Account</MenuItem>
-                <MenuItem onClick={this.closeMenu}>Logout</MenuItem>
+                <MenuItem onClick={this.logout}>Logout</MenuItem>
               </Menu>
             </div>
-          ) : <Button color="inherit" onClick={showLogin}>Login</Button>}
+          ) : <Button color="inherit" onClick={onShowLogin}>Login</Button>}
         </Toolbar>
       </AppBar>
     );
@@ -100,6 +100,11 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
   }
 
   private closeMenu = () => {
+    this.setState({ anchorEl: null });
+  }
+
+  private logout = () => {
+    this.props.onLogout();
     this.setState({ anchorEl: null });
   }
 }
@@ -113,8 +118,8 @@ export default (props: any) => (
         {...props}
         loading={auth.loading}
         user={auth.user}
-        logout={auth.actions.logout}
-        showLogin={auth.actions.openLoginBox}
+        onLogout={auth.actions.logout}
+        onShowLogin={auth.actions.openLoginBox}
       />
     )}
   </AuthContext.Consumer>

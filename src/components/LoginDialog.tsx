@@ -4,12 +4,8 @@ import {
   Theme, WithStyles
 } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,10 +14,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
 import { AuthContext } from '../contexts/AuthContext';
+import LoginForm from './LoginForm';
 
 interface LoginDialogProps {
   open: boolean;
+  error: string;
   onClose: () => void;
+  onLogin: () => void;
 }
 
 type ComponentClassNames =
@@ -43,7 +42,7 @@ function Transition(props: TransitionProps) {
 
 class LoginDialog extends React.Component<LoginDialogProps & WithStyles<ComponentClassNames>> {
   public render() {
-    const { open, classes, onClose } = this.props;
+    const { open, classes, error, onClose, onLogin } = this.props;
 
     return (
       <Dialog
@@ -58,22 +57,13 @@ class LoginDialog extends React.Component<LoginDialogProps & WithStyles<Componen
               <CloseIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Sound
+              Login
             </Typography>
-            <Button color="inherit" onClick={onClose}>
-              save
-            </Button>
           </Toolbar>
         </AppBar>
-        <List>
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-          </ListItem>
-        </List>
+
+        <LoginForm error={error} onSubmit={onLogin} />
+
       </Dialog>
     );
   }
@@ -86,8 +76,10 @@ export default (props: any) => (
     {(auth) => (
       <StyledLoginDialog
         {...props}
+        error={auth.error}
         open={auth.loginBoxOpen}
         onClose={auth.actions.closeLoginBox}
+        onLogin={auth.actions.login}
       />
     )}
   </AuthContext.Consumer>
