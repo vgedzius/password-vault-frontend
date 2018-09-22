@@ -10,7 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Home from '@material-ui/icons/Home';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 export type ComponentClassNames =
   | 'root'
@@ -40,13 +42,16 @@ class Header extends React.Component<WithStyles<ComponentClassNames>> {
     const { classes } = this.props;
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
+    const AccountLink = (props: any) => <Link to="/account" {...props} />
+    const HomeLink = (props: any) => <Link to="/" {...props} />
 
     return (
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.grow}>
-            Password Vault
-          </Typography>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" component={HomeLink}>
+            <Home />
+          </IconButton>
+          <Typography variant="title" color="inherit" className={classes.grow}>Password Vault</Typography>
           {auth ? (
             <div>
               <IconButton
@@ -71,7 +76,7 @@ class Header extends React.Component<WithStyles<ComponentClassNames>> {
                 open={open}
                 onClose={this.handleClose}
               >
-                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                <MenuItem onClick={this.handleClose} component={AccountLink}>Account</MenuItem>
                 <MenuItem onClick={this.handleClose}>Logout</MenuItem>
               </Menu>
             </div>
