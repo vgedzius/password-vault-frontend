@@ -14,10 +14,20 @@ import Home from '@material-ui/icons/Home';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
-export type ComponentClassNames =
+import { AuthContext } from '../contexts/AuthContext';
+import { User } from '../servises/Auth';
+
+type ComponentClassNames =
   | 'root'
   | 'grow'
   | 'menuButton';
+
+export interface HeaderProps {
+  user?: User;
+  loading: boolean;
+  logout: () => void;
+  showLogin: () => void;
+}
 
 export const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
@@ -32,15 +42,14 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
   },
 });
 
-class Header extends React.Component<WithStyles<ComponentClassNames>> {
+class Header extends React.Component<HeaderProps & WithStyles<ComponentClassNames>> {
   public state = {
-    auth: true,
     anchorEl: null,
   };
 
   public render() {
-    const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { classes, user, showLogin } = this.props;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const AccountLink = (props: any) => <Link to="/account" {...props} />
     const HomeLink = (props: any) => <Link to="/" {...props} />
@@ -52,12 +61,12 @@ class Header extends React.Component<WithStyles<ComponentClassNames>> {
             <Home />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.grow}>Password Vault</Typography>
-          {auth ? (
+          {user ? (
             <div>
               <IconButton
                 aria-owns={open ? 'menu-appbar' : undefined}
                 aria-haspopup="true"
-                onClick={this.handleMenu}
+                onClick={this.openMenu}
                 color="inherit"
               >
                 <AccountCircle />
@@ -74,25 +83,39 @@ class Header extends React.Component<WithStyles<ComponentClassNames>> {
                   horizontal: 'right',
                 }}
                 open={open}
-                onClose={this.handleClose}
+                onClose={this.closeMenu}
               >
-                <MenuItem onClick={this.handleClose} component={AccountLink}>Account</MenuItem>
-                <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                <MenuItem onClick={this.closeMenu} component={AccountLink}>Account</MenuItem>
+                <MenuItem onClick={this.closeMenu}>Logout</MenuItem>
               </Menu>
             </div>
-          ) : <Button color="inherit">Login</Button>}
+          ) : <Button color="inherit" onClick={showLogin}>Login</Button>}
         </Toolbar>
       </AppBar>
     );
   }
 
-  private handleMenu = (event: React.FormEvent) => {
+  private openMenu = (event: React.FormEvent) => {
     this.setState({ anchorEl: event.currentTarget });
   }
 
-  private handleClose = () => {
+  private closeMenu = () => {
     this.setState({ anchorEl: null });
   }
 }
 
-export default withStyles(styles)(Header);
+const StyledHeader = withStyles(styles)(Header);
+
+export default (props: any) => (
+  <AuthContext.Consumer>
+    {(auth) => (
+      <StyledHeader
+        {...props}
+        loading={auth.loading}
+        user={auth.user}
+        logout={auth.actions.logout}
+        showLogin={auth.actions.openLoginBox}
+      />
+    )}
+  </AuthContext.Consumer>
+);
