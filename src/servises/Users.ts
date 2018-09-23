@@ -10,7 +10,7 @@ export interface User {
 export default class Users {
   public static update = async (user: User) => {
     try {
-      const url = `http://localhost:3000/api/Accounts/${user.id}`;
+      const url = `${process.env.REACT_APP_API_URL}/Accounts/${user.id}`;
       const response = await axios.patch(url, user);
       return response.data;
     } catch (error) {
@@ -20,7 +20,7 @@ export default class Users {
 
   public static get = async (userId: string) => {
     try {
-      const url = `http://localhost:3000/api/Accounts/${userId}`;
+      const url = `${process.env.REACT_APP_API_URL}/Accounts/${userId}`;
       const response = await axios.get(url);
       return response.data;
     } catch (error) {

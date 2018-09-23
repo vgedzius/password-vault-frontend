@@ -16,7 +16,7 @@ export default class Auth {
 
   public static changePassword = async (payload: ChangePasswordPayload) => {
     try {
-      const url = 'http://localhost:3000/api/Accounts/change-password';
+      const url = `${process.env.REACT_APP_API_URL}/Accounts/change-password`;
       const response = await axios.post(url, payload);
       return response.data;
     } catch (error) {
@@ -26,7 +26,8 @@ export default class Auth {
 
   public static login = async (credentials: Credentials) => {
     try {
-      const login = await axios.post('http://localhost:3000/api/Accounts/login', credentials)
+      const url = `${process.env.REACT_APP_API_URL}/Accounts/login`;
+      const login = await axios.post(url, credentials)
 
       axios.defaults.headers.common.Authorization = login.data.id;
 
