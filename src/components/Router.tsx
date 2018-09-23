@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Switch, Route } from 'react-router';
+import { Switch } from 'react-router';
 
 import Passwords from './Passwords';
 import Account from './Account';
+import PrivateRoute from './PrivateRoute';
 
 export default class Router extends React.Component {
   public render() {
     return (
       <Switch>
-        <Route exact path="/" component={Passwords} />
-        <Route exact path="/account" component={Account} />
+        <PrivateRoute exact path="/" component={Passwords} />
+        <PrivateRoute exact path="/account" component={Account} />
       </Switch>
     )
   }

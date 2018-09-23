@@ -11,7 +11,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Home from '@material-ui/icons/Home';
-import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../contexts/AuthContext';
@@ -26,7 +25,6 @@ export interface HeaderProps {
   user?: User;
   loading: boolean;
   onLogout: () => void;
-  onShowLogin: () => void;
 }
 
 export const styles: StyleRulesCallback = (theme: Theme) => ({
@@ -48,7 +46,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
   };
 
   public render() {
-    const { classes, user, onShowLogin } = this.props;
+    const { classes, user } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const AccountLink = (props: any) => <Link to="/account" {...props} />
@@ -61,7 +59,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
             <Home />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.grow}>Password Vault</Typography>
-          {user ? (
+          {user && (
             <div>
               <IconButton
                 aria-owns={open ? 'menu-appbar' : undefined}
@@ -89,7 +87,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
                 <MenuItem onClick={this.logout}>Logout</MenuItem>
               </Menu>
             </div>
-          ) : <Button color="inherit" onClick={onShowLogin}>Login</Button>}
+          )}
         </Toolbar>
       </AppBar>
     );
@@ -119,7 +117,6 @@ export default (props: any) => (
         loading={auth.loading}
         user={auth.user}
         onLogout={auth.actions.logout}
-        onShowLogin={auth.actions.openLoginBox}
       />
     )}
   </AuthContext.Consumer>

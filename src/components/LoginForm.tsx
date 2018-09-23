@@ -11,8 +11,9 @@ import Lock from '@material-ui/icons/Lock';
 
 import { Credentials } from '../servises/Auth';
 
-import topSecret from '../topsecret.png';
+import topSecret from '../assets/topsecret.png';
 import { Typography } from '@material-ui/core';
+import { AuthContext } from '../contexts/AuthContext';
 
 export interface LoginFormState {
   password: string;
@@ -39,7 +40,7 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
   form: {
     margin: '0 auto',
     padding: theme.spacing.unit,
-    minWidth: 250,
+    width: '100%',
     maxWidth: 350,
   },
   grow: {
@@ -123,4 +124,16 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
   }
 }
 
-export default withStyles(styles)(LoginForm);
+const StyledLoginForm = withStyles(styles)(LoginForm);
+
+export default (props: any) => (
+  <AuthContext.Consumer>
+    {(auth) => (
+      <StyledLoginForm
+        {...props}
+        error={auth.error}
+        onSubmit={auth.actions.login}
+      />
+    )}
+  </AuthContext.Consumer>
+);
