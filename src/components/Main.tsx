@@ -1,15 +1,35 @@
 import * as React from 'react';
+import { StyleRulesCallback, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
 
 import Header from './Header';
-import Router from './Router';
+import Content from './Content';
 
-export default class Main extends React.Component {
+type ComponentClassNames =
+  | 'root'
+  | 'content'
+
+export const styles: StyleRulesCallback = (theme: Theme) => ({
+  root: {
+    flexGrow: 1,
+    height: window.innerHeight,
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+  },
+});
+
+class Main extends React.Component<WithStyles<ComponentClassNames>> {
   public render() {
+    const { classes } = this.props;
+
     return (
-      <React.Fragment>
+      <div className={classes.root}>
         <Header />
-        <Router />
-      </React.Fragment>
+        <Content />
+      </div>
     );
   }
 }
+
+export default withStyles(styles)(Main);

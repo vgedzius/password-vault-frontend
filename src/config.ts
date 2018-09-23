@@ -1,0 +1,1 @@
+export const MAIN_MENU_WIDTH = 240;

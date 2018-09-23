@@ -10,16 +10,22 @@ import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Home from '@material-ui/icons/Home';
+import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { User } from '../servises/Auth';
+import { MAIN_MENU_WIDTH } from '../config';
+import MainMenu from './MainMenu';
 
 type ComponentClassNames =
   | 'root'
   | 'grow'
-  | 'menuButton';
+  | 'menuButton'
+  | 'hide'
+  | 'appBar'
+  | 'appBarShift'
 
 export interface HeaderProps {
   user?: User;
@@ -38,68 +44,94 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
     marginLeft: -12,
     marginRight: 20,
   },
+  hide: {
+    display: 'none',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: MAIN_MENU_WIDTH,
+    width: `calc(100% - ${MAIN_MENU_WIDTH}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
 });
 
 class Header extends React.Component<HeaderProps & WithStyles<ComponentClassNames>> {
   public state = {
     anchorEl: null,
+    mainMenuOpen: false,
   };
 
   public render() {
     const { classes, user } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, mainMenuOpen } = this.state;
     const open = Boolean(anchorEl);
     const AccountLink = (props: any) => <Link to="/account" {...props} />
-    const HomeLink = (props: any) => <Link to="/" {...props} />
 
     return (
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" component={HomeLink}>
-            <Home />
-          </IconButton>
-          <Typography variant="title" color="inherit" className={classes.grow}>Password Vault</Typography>
-          {user && (
-            <div>
-              <IconButton
-                aria-owns={open ? 'menu-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={this.openMenu}
-                color="inherit"
-              >
-                <AccountCircle />
+      <React.Fragment>
+        <AppBar position="absolute" className={classNames(classes.appBar, mainMenuOpen && classes.appBarShift)}>
+          <Toolbar>
+            {user && (
+              <IconButton className={classNames(classes.menuButton, mainMenuOpen && classes.hide)} color="inherit" aria-label="Menu" onClick={this.openMainMenu}>
+                <MenuIcon />
               </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={this.closeMenu}
-              >
-                <MenuItem onClick={this.closeMenu} component={AccountLink}>Account</MenuItem>
-                <MenuItem onClick={this.logout}>Logout</MenuItem>
-              </Menu>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
+            )}
+            <Typography variant="title" color="inherit" className={classes.grow}>Password Vault</Typography>
+            {user && (
+              <div>
+                <IconButton
+                  aria-owns={open ? 'menu-appbar' : undefined}
+                  aria-haspopup="true"
+                    onClick={this.openUserMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                    onClose={this.closeUserMenu}
+                >
+                    <MenuItem onClick={this.closeUserMenu} component={AccountLink}>Account</MenuItem>
+                  <MenuItem onClick={this.logout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+
+        {user && (
+          <MainMenu open={mainMenuOpen} onClose={this.closeMainMenu} />
+        )}
+      </React.Fragment>
     );
   }
 
-  private openMenu = (event: React.FormEvent) => {
-    this.setState({ anchorEl: event.currentTarget });
-  }
+  private openUserMenu = (event: React.FormEvent) => this.setState({ anchorEl: event.currentTarget });
 
-  private closeMenu = () => {
-    this.setState({ anchorEl: null });
-  }
+  private closeUserMenu = () => this.setState({ anchorEl: null });
+
+  private openMainMenu = () => this.setState({ mainMenuOpen: true });
+
+  private closeMainMenu = () => this.setState({ mainMenuOpen: false });
 
   private logout = () => {
     this.props.onLogout();
