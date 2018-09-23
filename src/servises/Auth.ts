@@ -1,11 +1,5 @@
 import axios from 'axios';
-
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+import Users from './Users';
 
 export interface Credentials {
   password: string;
@@ -36,33 +30,13 @@ export default class Auth {
 
       axios.defaults.headers.common.Authorization = login.data.id;
 
-      const user = await Auth.fetch(login.data.userId);
+      const user = await Users.get(login.data.userId);
 
       return {
         userId: login.data.userId,
         token: login.data.id,
         user,
       }
-    } catch (error) {
-      throw error.response.data.error;
-    }
-  }
-
-  public static update = async (user: User) => {
-    try {
-      const url = `http://localhost:3000/api/Accounts/${user.id}`;
-      const response = await axios.patch(url, user);
-      return response.data;
-    } catch (error) {
-      throw error.response.data.error;
-    }
-  }
-
-  public static fetch = async (userId: string) => {
-    try {
-      const url = `http://localhost:3000/api/Accounts/${userId}`;
-      const response = await axios.get(url);
-      return response.data;
     } catch (error) {
       throw error.response.data.error;
     }

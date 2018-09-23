@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { AuthContext } from '../contexts/AuthContext';
-import { User } from '../servises/Auth';
+import { User } from '../servises/Users';
 import { MAIN_MENU_WIDTH } from '../config';
 import MainMenu from './MainMenu';
 

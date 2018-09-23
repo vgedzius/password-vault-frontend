@@ -1,7 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 
-import Auth, { Credentials, ChangePasswordPayload, User } from '../servises/Auth';
+import Auth, { Credentials, ChangePasswordPayload } from '../servises/Auth';
+import Users, { User } from '../servises/Users';
 
 export interface AuthActions {
   actions: {
@@ -68,7 +69,7 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
       this.setState({
         loading: true,
       });
-      Auth.fetch(userId)
+      Users.get(userId)
         .then(user => {
           this.loaded = true;
           this.setState({
@@ -183,7 +184,7 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
       ...user
     }
 
-    Auth.update(user)
+    Users.update(user)
       .then(updated => {
         this.setState({
           loading: false,
