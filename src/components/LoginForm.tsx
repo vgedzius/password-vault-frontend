@@ -12,7 +12,7 @@ import Lock from '@material-ui/icons/Lock';
 import { Credentials } from '../servises/Auth';
 
 import topSecret from '../assets/topsecret.png';
-import { Typography } from '@material-ui/core';
+import { Typography, CircularProgress } from '@material-ui/core';
 import { AuthContext } from '../contexts/AuthContext';
 
 export interface LoginFormState {
@@ -23,6 +23,7 @@ export interface LoginFormState {
 
 export interface LoginFormProps {
   error: string;
+  loading: boolean;
   onSubmit: (credentials: Credentials) => void;
 }
 
@@ -64,7 +65,7 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
   }
 
   public render() {
-    const { classes, error } = this.props;
+    const { classes, error, loading } = this.props;
     const { username, password, persist } = this.state;
 
     return (
@@ -99,7 +100,9 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
           />
         </FormGroup>
 
-        <Button type="submit" color="secondary" variant="raised" className={classes.loginButton}>Login</Button>
+        <Button type="submit" color="secondary" variant="raised" className={classes.loginButton}>
+          {loading ? <CircularProgress size={16} color='inherit' /> : 'Login'}
+        </Button>
       </form>
     );
   }
@@ -131,6 +134,7 @@ export default (props: any) => (
     {(auth) => (
       <StyledLoginForm
         {...props}
+        loading={auth.loading}
         error={auth.error}
         onSubmit={auth.actions.login}
       />
