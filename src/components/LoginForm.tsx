@@ -100,7 +100,7 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
           />
         </FormGroup>
 
-        <Button type="submit" color="secondary" variant="raised" className={classes.loginButton}>
+        <Button disabled={loading} type="submit" color="secondary" variant="raised" className={classes.loginButton}>
           {loading ? <CircularProgress size={16} color='inherit' /> : 'Login'}
         </Button>
       </form>
