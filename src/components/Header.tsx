@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -18,6 +17,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { User } from '../servises/Users';
 import { MAIN_MENU_WIDTH } from '../config';
 import MainMenu from './MainMenu';
+import UserAvatar from './UserAvatar';
 
 type ComponentClassNames =
   | 'root'
@@ -94,7 +94,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
                     onClick={this.openUserMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <UserAvatar user={user} />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
