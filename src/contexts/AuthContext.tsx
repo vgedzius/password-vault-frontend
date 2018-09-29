@@ -6,10 +6,8 @@ import Users, { User } from '../servises/Users';
 
 export interface AuthActions {
   actions: {
-    closeLoginBox: () => void,
     login: (credentials: Credentials) => void,
     logout: () => void,
-    openLoginBox: () => void,
     update: (user: User) => void,
     changePassword: (payload: ChangePasswordPayload) => void,
   };
@@ -17,7 +15,6 @@ export interface AuthActions {
 
 export interface AuthContextState {
   loading: boolean;
-  loginBoxOpen: boolean;
   user?: User;
   token?: string;
   userId?: string;
@@ -30,12 +27,9 @@ export interface AuthProviderProps {
 
 export const AuthContext = React.createContext<AuthContextState & AuthActions>({
   loading: false,
-  loginBoxOpen: false,
   actions: {
-    closeLoginBox: () => { },
     login: () => { },
     logout: () => { },
-    openLoginBox: () => { },
     update: () => { },
     changePassword: () => { },
   },
@@ -56,7 +50,6 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
 
     this.setState({
       loading: false,
-      loginBoxOpen: false,
       token,
       userId,
     });
@@ -88,7 +81,6 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
       this.loaded = true;
       this.setState({
         loading: false,
-        loginBoxOpen: false,
         token,
         userId,
       });
@@ -112,10 +104,8 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
     const value = {
       ...this.state,
       actions: {
-        closeLoginBox: this.closeLoginBox,
         login: this.login,
         logout: this.logout,
-        openLoginBox: this.openLoginBox,
         update: this.update,
         changePassword: this.changePassword,
       }
@@ -126,20 +116,6 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
         {this.loaded ? children : loadingComponent}
       </AuthContext.Provider>
     );
-  }
-
-  private openLoginBox = () => {
-    this.setState({
-      loginBoxOpen: true,
-      error: undefined,
-    });
-  }
-
-  private closeLoginBox = () => {
-    console.log('here');
-    this.setState({
-      loginBoxOpen: false
-    });
   }
 
   private login = (credentials: Credentials) => {
@@ -154,7 +130,6 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
 
         this.setState({
           loading: false,
-          loginBoxOpen: false,
           token: auth.token,
           userId: auth.userId,
           user: auth.user,
