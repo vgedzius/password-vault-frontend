@@ -29,7 +29,7 @@ interface MyDetailsState {
 export const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
     padding: theme.spacing.unit * 3,
-    width: '50%',
+    maxWidth: 500,
   },
   margin: {
     marginTop: theme.spacing.unit,
