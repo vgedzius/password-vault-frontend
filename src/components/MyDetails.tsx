@@ -15,8 +15,15 @@ type ComponentClassNames =
 
 interface MyDetailsProps {
   user: User;
+  onSave: (data: MyDetailsState) => void;
 }
 
+interface MyDetailsState {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+ 
 export const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
     padding: theme.spacing.unit * 3,
@@ -28,7 +35,7 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
   }
 });
 
-class MyDetails extends React.Component<MyDetailsProps & WithStyles<ComponentClassNames>> {
+class MyDetails extends React.Component<MyDetailsProps & WithStyles<ComponentClassNames>, MyDetailsState> {
   public state = {
     firstName: '',
     lastName: '',
@@ -40,17 +47,29 @@ class MyDetails extends React.Component<MyDetailsProps & WithStyles<ComponentCla
   }
 
   public render() {
-    const { classes, } = this.props;
+    const { classes } = this.props;
     const { firstName, lastName, email } = this.state;
 
     return (
-      <div className={classes.root}>
-        <TextField fullWidth className={classes.margin} label="First Name" value={firstName} />
-        <TextField fullWidth className={classes.margin} label="Last Name" value={lastName} />
-        <TextField fullWidth className={classes.margin} label="Email" value={email} />
-        <Button className={classes.margin} variant="raised" color="primary">Update</Button>
-      </div>
+      <form className={classes.root} onSubmit={this.handleSubmit}>
+        <TextField fullWidth className={classes.margin} label="First Name" value={firstName} onChange={this.handleChange('firstName')} />
+        <TextField fullWidth className={classes.margin} label="Last Name" value={lastName} onChange={this.handleChange('lastName')} />
+        <TextField fullWidth className={classes.margin} label="Email" value={email} onChange={this.handleChange('email')} />
+        <Button type="submit" className={classes.margin} variant="raised" color="primary">Update</Button>
+      </form>
     );
+  }
+
+  private handleChange = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      ...this.state,
+      [prop]: event.currentTarget.value
+    });
+  }
+
+  private handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    this.props.onSave(this.state);
   }
 }
 
@@ -62,6 +81,7 @@ export default (props: any) => (
       <StyledMyDetails
         {...props}
         user={auth.user}
+        onSave={auth.actions.update}
       />
     )}
   </AuthContext.Consumer>
