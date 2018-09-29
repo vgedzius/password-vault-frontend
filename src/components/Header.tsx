@@ -18,6 +18,7 @@ import { User } from '../servises/Users';
 import { MAIN_MENU_WIDTH } from '../config';
 import MainMenu from './MainMenu';
 import UserAvatar from './UserAvatar';
+import { CircularProgress } from '@material-ui/core';
 
 type ComponentClassNames =
   | 'root'
@@ -71,7 +72,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
   };
 
   public render() {
-    const { classes, user } = this.props;
+    const { classes, user, loading } = this.props;
     const { anchorEl, mainMenuOpen } = this.state;
     const open = Boolean(anchorEl);
     const AccountLink = (props: any) => <Link to="/account" {...props} />
@@ -94,7 +95,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
                     onClick={this.openUserMenu}
                   color="inherit"
                 >
-                  <UserAvatar user={user} />
+                  {loading ? <CircularProgress color='inherit' /> : <UserAvatar user={user} />}
                 </IconButton>
                 <Menu
                   id="menu-appbar"
