@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import LoginForm from './LoginForm';
 
 interface Props {
-  component: React.ComponentClass;
+  component: any;
   [key: string]: any;
 }
 
