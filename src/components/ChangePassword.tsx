@@ -3,11 +3,12 @@ import {
   StyleRulesCallback, Theme,
   withStyles, WithStyles
 } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import { AuthContext } from '../contexts/AuthContext';
+import { openSnackbar } from './Notifier';
 
 type ComponentClassNames =
   | 'root'
@@ -41,19 +42,58 @@ class ChangePassword extends React.Component<ChangePasswordProps & WithStyles<Co
     confirmPassword: '',
   }
 
+  public componentDidMount() {
+    // custom rule will have name 'isPasswordMatch'
+    ValidatorForm.addValidationRule('isPasswordMatch', (value: string) => {
+      if (value !== this.state.newPassword) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   public render() {
     const { classes, loading } = this.props;
     const { oldPassword, newPassword, confirmPassword } = this.state;
 
     return (
-      <form className={classes.root} onSubmit={this.handleSubmit}>
-        <TextField fullWidth type="password" className={classes.margin} value={oldPassword} label="Old Password" onChange={this.handleChange('oldPassword')} />
-        <TextField fullWidth type="password" className={classes.margin} value={newPassword} label="New Password" onChange={this.handleChange('newPassword')} />
-        <TextField fullWidth type="password" className={classes.margin} value={confirmPassword} label="Confirm" onChange={this.handleChange('confirmPassword')} />
-        <Button className={classes.margin} type="submit" variant="raised" color="primary">
-          {loading ? <CircularProgress size={16} color='inherit' /> : 'Change'}
-        </Button>
-      </form>
+      <div className={classes.root}>
+        <ValidatorForm onSubmit={this.handleSubmit} onError={this.handleError}>
+          <TextValidator
+            fullWidth
+            type="password"
+            className={classes.margin}
+            value={oldPassword}
+            name="oldPassword"
+            label="Old Password"
+            onChange={this.handleChange('oldPassword')}
+            validators={['required']}
+            errorMessages={['This field is required']} />
+          <TextValidator
+            fullWidth
+            type="password"
+            className={classes.margin}
+            value={newPassword}
+            name="newPassword"
+            label="New Password"
+            onChange={this.handleChange('newPassword')}
+            validators={['required']}
+            errorMessages={['This field is required']} />
+          <TextValidator
+            fullWidth
+            type="password"
+            className={classes.margin}
+            value={confirmPassword}
+            name="confirmPassword"
+            label="Confirm"
+            onChange={this.handleChange('confirmPassword')}
+            validators={['required', 'isPasswordMatch']}
+            errorMessages={['This field is required', 'Passwords doesn\'t match']} />
+          <Button className={classes.margin} type="submit" variant="raised" color="primary">
+            {loading ? <CircularProgress size={16} color='inherit' /> : 'Change'}
+          </Button>
+        </ValidatorForm>
+      </div>
     );
   }
 
@@ -62,6 +102,10 @@ class ChangePassword extends React.Component<ChangePasswordProps & WithStyles<Co
       ...this.state,
       [prop]: event.currentTarget.value
     });
+  }
+
+  private handleError = () => {
+    openSnackbar('Please check your inputs');
   }
 
   private handleSubmit = (event: React.FormEvent) => {

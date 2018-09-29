@@ -3,12 +3,13 @@ import {
   StyleRulesCallback, Theme,
   withStyles, WithStyles
 } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { User } from '../servises/Users';
+import { openSnackbar } from './Notifier';
 
 type ComponentClassNames =
   | 'root'
@@ -53,14 +54,40 @@ class MyDetails extends React.Component<MyDetailsProps & WithStyles<ComponentCla
     const { firstName, lastName, email } = this.state;
 
     return (
-      <form className={classes.root} onSubmit={this.handleSubmit}>
-        <TextField fullWidth className={classes.margin} label="First Name" value={firstName} onChange={this.handleChange('firstName')} />
-        <TextField fullWidth className={classes.margin} label="Last Name" value={lastName} onChange={this.handleChange('lastName')} />
-        <TextField fullWidth className={classes.margin} label="Email" value={email} onChange={this.handleChange('email')} />
-        <Button disabled={loading} type="submit" className={classes.margin} variant="raised" color="primary">
-          {loading ? <CircularProgress size={16} color='inherit' /> : 'Update'}
-        </Button>
-      </form>
+      <div className={classes.root}>
+        <ValidatorForm onSubmit={this.handleSubmit} onError={this.handleError}>
+          <TextValidator
+            fullWidth
+            className={classes.margin}
+            name="firstName"
+            label="First Name"
+            value={firstName}
+            onChange={this.handleChange('firstName')}
+            validators={['required']}
+            errorMessages={['This field is required']} />
+          <TextValidator
+            fullWidth
+            className={classes.margin}
+            name="lastName"
+            label="Last Name"
+            value={lastName}
+            onChange={this.handleChange('lastName')}
+            validators={['required']}
+            errorMessages={['This field is required']} />
+          <TextValidator
+            fullWidth
+            className={classes.margin}
+            name="email"
+            label="Email"
+            value={email}
+            onChange={this.handleChange('email')}
+            validators={['required', 'isEmail']}
+            errorMessages={['This field is required', 'Email is not valid']} />
+          <Button disabled={loading} type="submit" className={classes.margin} variant="raised" color="primary">
+            {loading ? <CircularProgress size={16} color='inherit' /> : 'Update'}
+          </Button>
+        </ValidatorForm>
+      </div>
     );
   }
 
@@ -69,6 +96,10 @@ class MyDetails extends React.Component<MyDetailsProps & WithStyles<ComponentCla
       ...this.state,
       [prop]: event.currentTarget.value
     });
+  }
+
+  private handleError = () => {
+    openSnackbar('Please check your inputs');
   }
 
   private handleSubmit = (event: React.FormEvent) => {
