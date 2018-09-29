@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Auth, { Credentials, ChangePasswordPayload } from '../servises/Auth';
 import Users, { User } from '../servises/Users';
+import { openSnackbar } from '../components/Notifier';
 
 export interface AuthActions {
   actions: {
@@ -135,10 +136,14 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
           user: auth.user,
         });
       })
-      .catch(error => this.setState({
-        loading: false,
-        error: error.message,
-      }));
+      .catch(error => {
+        openSnackbar(error.message);
+
+        this.setState({
+          loading: false,
+          error: error.message,
+        })
+      });
   }
 
   private logout = () => {
@@ -161,12 +166,16 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
 
     Users.update(user)
       .then(updated => {
+        openSnackbar('Details updated');
+        
         this.setState({
           loading: false,
           user: updated,
         })
       })
       .catch(error => {
+        openSnackbar(error.message);
+
         this.setState({
           loading: false,
           error: error.message,
@@ -182,12 +191,16 @@ export default class AuthProvider extends React.Component<AuthProviderProps, Aut
 
     Auth.changePassword(payload)
       .then(() => {
+        openSnackbar('Pasword updated');
+
         this.setState({
           ...this.state,
           loading: false,
         })
       })
       .catch(error => {
+        openSnackbar(error.message);
+        
         this.setState({
           ...this.state,
           loading: false,

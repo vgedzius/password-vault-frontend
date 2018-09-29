@@ -8,11 +8,10 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Lock from '@material-ui/icons/Lock';
-
-import { Credentials } from '../servises/Auth';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import topSecret from '../assets/topsecret.png';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Credentials } from '../servises/Auth';
 import { AuthContext } from '../contexts/AuthContext';
 
 export interface LoginFormState {
@@ -71,9 +70,6 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
     return (
       <form onSubmit={this.submit} className={classes.form}>
         <img src={topSecret} className={classes.logo} />
-        {error && (
-          <Typography color="error" className={classes.error}>{error}</Typography>
-        )}
         <Grid container spacing={8} alignItems="flex-end" alignContent="space-between">
           <Grid item>
             <AccountCircle />

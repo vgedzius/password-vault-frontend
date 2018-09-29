@@ -3,6 +3,7 @@ import { StyleRulesCallback, Theme, WithStyles, withStyles } from '@material-ui/
 
 import Header from './Header';
 import Content from './Content';
+import Notifier from './Notifier';
 
 type ComponentClassNames =
   | 'root'
@@ -27,6 +28,7 @@ class Main extends React.Component<WithStyles<ComponentClassNames>> {
       <div className={classes.root}>
         <Header />
         <Content />
+        <Notifier />
       </div>
     );
   }
