@@ -8,6 +8,16 @@ export interface User {
 }
 
 export default class Users {
+  public static all = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/Accounts`;
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      throw error.response.data.error;
+    }
+  }
+
   public static update = async (user: User) => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/Accounts/${user.id}`;
