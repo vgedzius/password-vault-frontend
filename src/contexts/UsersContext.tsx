@@ -2,19 +2,33 @@ import * as React from 'react';
 import Users, { User } from '../servises/Users';
 import { openSnackbar } from '../components/Notifier';
 
-export const UsersContext = React.createContext<UsersState>({
+export const UsersContext = React.createContext<UsersState & UserContextActions>({
   loading: false,
+  addDialogOpen: false,
   users: [],
+  actions: {
+    openAddDialog: () => {},
+    closeAddDialog: () => {},
+  }
 });
+
+interface UserContextActions {
+  actions: {
+    openAddDialog: () => void,
+    closeAddDialog: () => void,
+  }
+}
 
 interface UsersState {
   loading: boolean;
+  addDialogOpen: boolean
   users: User[];
 }
 
 export default class UsersProvider extends React.Component<{}, UsersState> {
   public state = {
     loading: false,
+    addDialogOpen: false,
     users: [],
   }
 
@@ -24,9 +38,16 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
 
   public render() {
     const { children } = this.props;
+    const value = {
+      ...this.state,
+      actions: {
+        openAddDialog: this.openAddDialog,
+        closeAddDialog: this.closeAddDialog,
+      }
+    }
 
     return (
-      <UsersContext.Provider value={this.state}>
+      <UsersContext.Provider value={value}>
         {children}
       </UsersContext.Provider>
     );
@@ -48,4 +69,8 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
         })
       })
   }
+
+  private openAddDialog = () => this.setState({ addDialogOpen: true });
+
+  private closeAddDialog = () => this.setState({ addDialogOpen: false });
 }

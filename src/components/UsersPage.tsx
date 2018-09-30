@@ -14,10 +14,12 @@ import Button from '@material-ui/core/Button';
 import { UsersContext } from '../contexts/UsersContext';
 import { User } from '../servises/Users';
 import UserRow from './UserRow';
+import AddUserDialog from './AddUserDialog';
 
 export interface UsersProps {
   loading: boolean;
   users: User[];
+  onAddClick: () => void;
 }
 
 export type ComponentClassNames = 
@@ -38,7 +40,7 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
 
 class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNames>> {
   public render() {
-    const { loading, users, classes } = this.props;
+    const { loading, users, classes, onAddClick } = this.props;
     return (
       <div className={classes.root}>
         <Typography variant="headline">Users</Typography>
@@ -57,14 +59,15 @@ class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNa
             </TableHead>
             <TableBody>
               {users.map((user) => (
-                <UserRow user={user} />
+                <UserRow key={user.id} user={user} />
               ))}
             </TableBody>
           </Table>
         )}
-        <Button className={classes.addButton} variant="fab" color="secondary">
+        <Button className={classes.addButton} variant="fab" color="secondary" onClick={onAddClick}>
           <PersonAddIcon />
         </Button>
+        <AddUserDialog />
       </div>
     )
   }
@@ -74,10 +77,11 @@ const StyledUserPage = withStyles(styles)(UsersPage);
 
 export default (props: any) => (
   <UsersContext.Consumer>
-    {(data) => (
+    {(state) => (
       <StyledUserPage
         {...props}
-        users={data.users}
+        users={state.users}
+        onAddClick={state.actions.openAddDialog}
       />
     )}
   </UsersContext.Consumer>
