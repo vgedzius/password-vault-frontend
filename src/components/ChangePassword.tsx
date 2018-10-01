@@ -43,7 +43,6 @@ class ChangePassword extends React.Component<ChangePasswordProps & WithStyles<Co
   }
 
   public componentDidMount() {
-    // custom rule will have name 'isPasswordMatch'
     ValidatorForm.addValidationRule('isPasswordMatch', (value: string) => {
       if (value !== this.state.newPassword) {
         return false;

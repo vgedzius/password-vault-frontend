@@ -3,7 +3,7 @@ import Users from './Users';
 
 export interface Credentials {
   password: string;
-  username: string;
+  email: string;
   persist?: boolean;
 }
 

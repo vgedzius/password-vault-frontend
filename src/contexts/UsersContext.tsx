@@ -9,6 +9,7 @@ export const UsersContext = React.createContext<UsersState & UserContextActions>
   actions: {
     openAddDialog: () => {},
     closeAddDialog: () => {},
+    addUser: () => {},
   }
 });
 
@@ -16,6 +17,7 @@ interface UserContextActions {
   actions: {
     openAddDialog: () => void,
     closeAddDialog: () => void,
+    addUser: (user: User) => void,
   }
 }
 
@@ -43,6 +45,7 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
       actions: {
         openAddDialog: this.openAddDialog,
         closeAddDialog: this.closeAddDialog,
+        addUser: this.addUser,
       }
     }
 
@@ -73,4 +76,29 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
   private openAddDialog = () => this.setState({ addDialogOpen: true });
 
   private closeAddDialog = () => this.setState({ addDialogOpen: false });
+
+  private addUser = (user: User) => {
+    this.setState({
+      loading: true,
+    })
+
+    Users.create(user).then(newUser => {
+      openSnackbar('User created');
+
+      this.setState({
+        loading: false,
+        addDialogOpen: false,
+        users: [
+          ...this.state.users,
+          newUser,
+        ]
+      })
+    }).catch(error => {
+      openSnackbar(error.message);
+
+      this.setState({
+        loading: false,
+      });
+    });
+  }  
 }

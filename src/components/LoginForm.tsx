@@ -16,7 +16,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 export interface LoginFormState {
   password: string;
-  username: string;
+  email: string;
   persist: boolean;
 }
 
@@ -58,14 +58,14 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
   public componentWillMount() {
     this.setState({
       password: '',
-      username: '',
+      email: '',
       persist: true,
     });
   }
 
   public render() {
     const { classes, error, loading } = this.props;
-    const { username, password, persist } = this.state;
+    const { email, password, persist } = this.state;
 
     return (
       <form onSubmit={this.submit} className={classes.form}>
@@ -75,7 +75,7 @@ class LoginForm extends React.Component<LoginFormProps & WithStyles<ComponentCla
             <AccountCircle />
           </Grid>
           <Grid item className={classes.grow}>
-            <TextField margin="dense" id="email" label="Email Address" type="text" error={Boolean(error)} fullWidth value={username} onChange={this.handleChange('username')} />
+            <TextField margin="dense" id="email" label="Email Address" type="text" error={Boolean(error)} fullWidth value={email} onChange={this.handleChange('email')} />
           </Grid>
         </Grid>
 

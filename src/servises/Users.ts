@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 export interface User {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
+  password?: string;
 }
 
 export default class Users {
@@ -32,6 +33,16 @@ export default class Users {
     try {
       const url = `${process.env.REACT_APP_API_URL}/Accounts/${userId}`;
       const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      throw error.response.data.error;
+    }
+  }
+
+  public static create = async (user: User) => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/Accounts`;
+      const response = await axios.post(url, user);
       return response.data;
     } catch (error) {
       throw error.response.data.error;
