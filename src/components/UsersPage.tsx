@@ -20,11 +20,13 @@ export interface UsersProps {
   loading: boolean;
   users: User[];
   onAddClick: () => void;
+  onLoad: () => void;
 }
 
 export type ComponentClassNames = 
   | 'root'
-  | 'addButton' 
+  | 'addButton'
+  | 'progress'
 
 export const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
@@ -35,20 +37,25 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
     bottom: 0,
     right: 0,
     margin: theme.spacing.unit * 3,
+  },
+  progress: {
+    height: 1,
   }
 })
 
 class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNames>> {
+  public componentDidMount() {
+    this.props.onLoad();
+  }
+
   public render() {
     const { loading, users, classes, onAddClick } = this.props;
+    
     return (
       <div className={classes.root}>
         <Typography variant="headline">Users</Typography>
-        <Divider />
-        {loading && (
-          <LinearProgress />
-        )}
-        {users && (
+        {loading ? <LinearProgress className={classes.progress} /> : <Divider />}
+        {users &&
           <Table>
             <TableHead>
               <TableRow>
@@ -63,7 +70,7 @@ class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNa
               ))}
             </TableBody>
           </Table>
-        )}
+        }
         <Button className={classes.addButton} variant="fab" color="secondary" onClick={onAddClick}>
           <PersonAddIcon />
         </Button>
@@ -80,8 +87,10 @@ export default (props: any) => (
     {(state) => (
       <StyledUserPage
         {...props}
+        loading={state.loading}
         users={state.users}
         onAddClick={state.actions.openAddDialog}
+        onLoad={state.actions.load}
       />
     )}
   </UsersContext.Consumer>

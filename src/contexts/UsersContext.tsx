@@ -10,6 +10,7 @@ export const UsersContext = React.createContext<UsersState & UserContextActions>
     openAddDialog: () => {},
     closeAddDialog: () => {},
     addUser: () => {},
+    load: () => {}
   }
 });
 
@@ -18,6 +19,7 @@ interface UserContextActions {
     openAddDialog: () => void,
     closeAddDialog: () => void,
     addUser: (user: User) => void,
+    load: () => void,
   }
 }
 
@@ -34,10 +36,6 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
     users: [],
   }
 
-  public componentDidMount() {
-    this.load();
-  }
-
   public render() {
     const { children } = this.props;
     const value = {
@@ -46,6 +44,7 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
         openAddDialog: this.openAddDialog,
         closeAddDialog: this.closeAddDialog,
         addUser: this.addUser,
+        load: this.load,
       }
     }
 
@@ -59,18 +58,19 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
   private load = () => {
     this.setState({ loading: true });
 
-    Users.all()
+    setTimeout(() => Users.all()
       .then((users) => this.setState({
         loading: false,
         users
       }))
       .catch((error) => {
         openSnackbar(error.message);
-        
+
         this.setState({
           loading: false,
         })
-      })
+      }), 2000);
+    
   }
 
   private openAddDialog = () => this.setState({ addDialogOpen: true });
