@@ -21,6 +21,7 @@ export interface UsersProps {
   users: User[];
   onAddClick: () => void;
   onLoad: () => void;
+  onDelete: (user: User) => void;
 }
 
 export type ComponentClassNames = 
@@ -66,7 +67,7 @@ class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNa
             </TableHead>
             <TableBody>
               {users.map((user) => (
-                <UserRow key={user.id} user={user} />
+                <UserRow key={user.id} user={user} onDelete={this.handleDelete} />
               ))}
             </TableBody>
           </Table>
@@ -78,6 +79,8 @@ class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNa
       </div>
     )
   }
+
+  private handleDelete = (user: User) => this.props.onDelete(user);
 }
 
 const StyledUserPage = withStyles(styles)(UsersPage);
@@ -90,6 +93,7 @@ export default (props: any) => (
         loading={state.loading}
         users={state.users}
         onAddClick={state.actions.openAddDialog}
+        onDelete={state.actions.delete}
         onLoad={state.actions.load}
       />
     )}

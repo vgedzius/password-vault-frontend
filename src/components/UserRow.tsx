@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 export interface UserRowProps {
   user: User;
+  onDelete: (user: User) => void;
 }
 
 export default class UserRow extends React.Component<UserRowProps> {
@@ -19,7 +20,7 @@ export default class UserRow extends React.Component<UserRowProps> {
         <TableCell>{user.firstName} {user.lastName}</TableCell>
         <TableCell>{user.email}</TableCell>
         <TableCell>
-          <IconButton color="secondary">
+          <IconButton color="secondary" onClick={this.handleDelete}>
             <DeleteIcon fontSize="small" />
           </IconButton >
         </TableCell>
@@ -30,5 +31,7 @@ export default class UserRow extends React.Component<UserRowProps> {
   private handleMouseOver = () => this.setState({ hover: true })
 
   private handleMouseLeave = () => this.setState({ hover: false })
+
+  private handleDelete = () => this.props.onDelete(this.props.user);
   
 }

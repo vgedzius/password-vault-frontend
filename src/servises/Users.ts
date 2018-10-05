@@ -48,4 +48,14 @@ export default class Users {
       throw error.response.data.error;
     }
   }
+
+  public static delete = async (user: User) => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/Accounts/${user.id}`;
+      const response = await axios.delete(url);
+      return response.data;
+    } catch (error) {
+      throw error.response.data.error;
+    }
+  }
 }

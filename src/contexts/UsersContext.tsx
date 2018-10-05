@@ -9,7 +9,8 @@ export const UsersContext = React.createContext<UsersState & UserContextActions>
   actions: {
     openAddDialog: () => {},
     closeAddDialog: () => {},
-    addUser: () => {},
+    add: () => {},
+    delete: () => {},
     load: () => {}
   }
 });
@@ -18,7 +19,8 @@ interface UserContextActions {
   actions: {
     openAddDialog: () => void,
     closeAddDialog: () => void,
-    addUser: (user: User) => void,
+    add: (user: User) => void,
+    delete: (user: User) => void,
     load: () => void,
   }
 }
@@ -43,7 +45,8 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
       actions: {
         openAddDialog: this.openAddDialog,
         closeAddDialog: this.closeAddDialog,
-        addUser: this.addUser,
+        add: this.add,
+        delete: this.delete,
         load: this.load,
       }
     }
@@ -77,7 +80,7 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
 
   private closeAddDialog = () => this.setState({ addDialogOpen: false });
 
-  private addUser = (user: User) => {
+  private add = (user: User) => {
     this.setState({
       loading: true,
     })
@@ -100,5 +103,26 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
         loading: false,
       });
     });
-  }  
+  }
+  
+  private delete = (user: User) => {
+    this.setState({
+      loading: true,
+    });
+
+    Users.delete(user).then(() => {
+      openSnackbar('User deleted');
+
+      this.setState((prev) => ({
+        loading: false,
+        users: prev.users.filter(item => item.id !== user.id),
+      }))
+    }).catch(error => {
+      openSnackbar(error.message);
+
+      this.setState({
+        loading: false,
+      });
+    });
+  }
 }

@@ -151,12 +151,12 @@ class AddUserDialog extends React.Component<AddUserDialogProps> {
 
 export default (props: any) => (
   <UsersContext.Consumer>
-    {(state) => (
+    {(users) => (
       <AddUserDialog
         {...props}
-        open={state.addDialogOpen}
-        onClose={state.actions.closeAddDialog}
-        onAdd={state.actions.addUser}
+        open={users.addDialogOpen}
+        onClose={users.actions.closeAddDialog}
+        onAdd={users.actions.add}
       />
     )}
   </UsersContext.Consumer>
