@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 class ConfirmDialog extends React.Component<ReactConfirmProps> {
   public render() {
     const { confirmation, show } = this.props;
-    
+
     return (
       <Dialog
         open={show}
@@ -20,7 +20,7 @@ class ConfirmDialog extends React.Component<ReactConfirmProps> {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {confirmation}
-            </DialogContentText>
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleCancel} color="primary">Cancel</Button>
