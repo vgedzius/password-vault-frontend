@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LockIcon from '@material-ui/icons/Lock';
-
+import classNames from 'classnames';
 
 import { Password } from '../servises/Passwords';
 
@@ -23,6 +23,7 @@ type ComponentClassNames =
   | 'content'
   | 'cover'
   | 'controls'
+  | 'hidden'
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
@@ -61,21 +62,33 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     paddingLeft: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
   },
+  hidden: {
+    visibility: 'hidden',
+  }
 });
 
 class PasswordCard extends React.Component<PasswordCardProps & WithStyles<ComponentClassNames>> {
+  public state = {
+    hover: false,
+  }
+
   public render() {
     const { classes, password } = this.props;
+    const { hover } = this.state;
 
     return (
       <div className={classes.root}>
-        <Card className={classes.card}>
+        <Card
+          className={classes.card}
+          onMouseEnter={this.handleMouseEnter}
+          onMouseLeave={this.handleMouseLeave}>
+
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <Typography component="h2" variant="headline">{password.url}</Typography>
               <Typography variant="subheading" color="textSecondary">{password.userName}</Typography>
             </CardContent>
-            <div className={classes.controls}>
+            <div className={classNames(classes.controls, !hover && classes.hidden)}>
               <IconButton aria-label="Edit">
                 <EditIcon />
               </IconButton>
@@ -95,6 +108,10 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
       </div>
     );
   }
+
+  private handleMouseEnter = () => this.setState({ hover: true });
+
+  private handleMouseLeave = () => this.setState({ hover: false });
 }
 
 export default withStyles(styles)(PasswordCard)
