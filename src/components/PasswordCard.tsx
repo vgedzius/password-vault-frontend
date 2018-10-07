@@ -79,6 +79,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
     return (
       <div className={classes.root}>
         <Card
+          raised={hover}
           className={classes.card}
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}>
