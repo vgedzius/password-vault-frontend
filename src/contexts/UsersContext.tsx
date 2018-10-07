@@ -61,7 +61,7 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
   private load = () => {
     this.setState({ loading: true });
 
-    setTimeout(() => Users.all()
+    Users.all()
       .then((users) => this.setState({
         loading: false,
         users
@@ -72,8 +72,7 @@ export default class UsersProvider extends React.Component<{}, UsersState> {
         this.setState({
           loading: false,
         })
-      }), 2000);
-    
+      });
   }
 
   private openAddDialog = () => this.setState({ addDialogOpen: true });
