@@ -5,11 +5,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 import { UsersContext } from '../contexts/UsersContext';
 import { openSnackbar } from './Notifier';
 import { User } from '../servises/Users';
-import { Grid } from '@material-ui/core';
+
 
 interface AddUserDialogProps {
   open: boolean;

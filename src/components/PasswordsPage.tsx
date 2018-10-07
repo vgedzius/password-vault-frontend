@@ -7,6 +7,7 @@ import { PasswordsContext } from '../contexts/PasswordsContext';
 import { Password } from '../servises/Passwords';
 import PasswordCard from './PasswordCard';
 import PageHeader from './PageHeader';
+import AddPasswordDialog from './AddPasswordDialog';
 
 export interface PasswordsPageProps {
   loading: boolean;
@@ -64,6 +65,7 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
         <Button className={classes.addButton} variant="fab" color="secondary" onClick={onAddClick}>
           <AddIcon />
         </Button>
+        <AddPasswordDialog />
       </div>
     )
   }
