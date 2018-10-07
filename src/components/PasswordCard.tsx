@@ -75,7 +75,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
         </div>
         <CardMedia
           className={classes.cover}
-          image="https://placeimg.com/250/250/tech"
+          image="http://placecage.com/c/250/250"
           title="Live from space album cover"
         />
       </Card>
