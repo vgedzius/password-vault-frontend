@@ -19,7 +19,7 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
   }
 })
 
-class Account extends React.Component<WithStyles<ComponentClassNames>> {
+class AccountPage extends React.Component<WithStyles<ComponentClassNames>> {
   public state = {
     currentTab: 0,
   }
@@ -48,4 +48,4 @@ class Account extends React.Component<WithStyles<ComponentClassNames>> {
   private changeTab = (e: React.ChangeEvent, v: number) => this.setState({currentTab: v})
 }
 
-export default withStyles(styles)(Account);
+export default withStyles(styles)(AccountPage);
