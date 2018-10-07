@@ -17,6 +17,7 @@ export interface PasswordCardProps {
 }
 
 type ComponentClassNames = 
+  | 'root'
   | 'card'
   | 'details'
   | 'content'
@@ -24,15 +25,27 @@ type ComponentClassNames =
   | 'controls'
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
+  root: {
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit * 2,
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '50%',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '33.333333%',
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: '25%',
+    },
+  },
   card: {
     display: 'flex',
-    flexShrink: 1,
-    marginRight: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
   },
   details: {
     display: 'flex',
-    width: 250,
+    flexGrow: 1,
     flexDirection: 'column',
     overflow: 'hidden',
   },
@@ -55,30 +68,31 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
     const { classes, password } = this.props;
 
     return (
-      <Card className={classes.card}>
-        <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography component="h2" variant="headline">{password.url}</Typography>
-            <Typography variant="subheading" color="textSecondary">{password.userName}</Typography>
-          </CardContent>
-          <div className={classes.controls}>
-            <IconButton aria-label="Edit">
-              <EditIcon />
-            </IconButton>
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-            <IconButton aria-label="Coppy to clipboard">
-              <LockIcon />
-            </IconButton>
+      <div className={classes.root}>
+        <Card className={classes.card}>
+          <div className={classes.details}>
+            <CardContent className={classes.content}>
+              <Typography component="h2" variant="headline">{password.url}</Typography>
+              <Typography variant="subheading" color="textSecondary">{password.userName}</Typography>
+            </CardContent>
+            <div className={classes.controls}>
+              <IconButton aria-label="Edit">
+                <EditIcon />
+              </IconButton>
+              <IconButton aria-label="Delete">
+                <DeleteIcon />
+              </IconButton>
+              <IconButton aria-label="Coppy to clipboard">
+                <LockIcon />
+              </IconButton>
+            </div>
           </div>
-        </div>
-        <CardMedia
-          className={classes.cover}
-          image="http://placecage.com/c/250/250"
-          title="Live from space album cover"
-        />
-      </Card>
+          <CardMedia
+            className={classes.cover}
+            image="http://placecage.com/c/250/250"
+            title="Live from space album cover" />
+        </Card>
+      </div>
     );
   }
 }

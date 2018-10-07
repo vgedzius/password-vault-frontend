@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 
 import { PasswordsContext } from '../contexts/PasswordsContext';
 import { Password } from '../servises/Passwords';
@@ -37,6 +39,8 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     marginTop: theme.spacing.unit * 3,
+    marginLeft: -theme.spacing.unit,
+    marginRight: -theme.spacing.unit,
   }
 })
 
@@ -46,7 +50,7 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
   }
 
   public render() {
-    const { classes, loading, passwords } = this.props;
+    const { classes, loading, passwords, onAddClick } = this.props;
     return (
       <div className={classes.root}>
         <PageHeader headline="Passwords" loading={loading} />
@@ -57,6 +61,9 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
             )}
           </div>
         }
+        <Button className={classes.addButton} variant="fab" color="secondary" onClick={onAddClick}>
+          <AddIcon />
+        </Button>
       </div>
     )
   }
