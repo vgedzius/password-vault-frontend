@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 
 import { PasswordsContext } from '../contexts/PasswordsContext';
-import { LinearProgress, Divider } from '@material-ui/core';
 import { Password } from '../servises/Passwords';
 import PasswordCard from './PasswordCard';
+import PageHeader from './PageHeader';
 
 export interface PasswordsPageProps {
   loading: boolean;
@@ -48,11 +47,9 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
 
   public render() {
     const { classes, loading, passwords } = this.props;
-    console.log(passwords);
     return (
       <div className={classes.root}>
-        <Typography variant="headline">Passwords</Typography>
-        {loading ? <LinearProgress className={classes.progress} /> : <Divider />}
+        <PageHeader headline="Passwords" loading={loading} />
         {passwords &&
           <div className={classes.grid}>
             {passwords.map(password =>

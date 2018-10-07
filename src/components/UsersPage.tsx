@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { StyleRulesCallback, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Divider from '@material-ui/core/Divider';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -15,6 +12,7 @@ import { UsersContext } from '../contexts/UsersContext';
 import { User } from '../servises/Users';
 import UserRow from './UserRow';
 import AddUserDialog from './AddUserDialog';
+import PageHeader from './PageHeader';
 
 export interface UsersProps {
   loading: boolean;
@@ -54,8 +52,7 @@ class UsersPage extends React.Component<UsersProps & WithStyles<ComponentClassNa
     
     return (
       <div className={classes.root}>
-        <Typography variant="headline">Users</Typography>
-        {loading ? <LinearProgress className={classes.progress} /> : <Divider />}
+        <PageHeader headline="Users" loading={loading} />
         {users &&
           <Table>
             <TableHead>
