@@ -58,7 +58,7 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
         {passwords &&
           <div className={classes.grid}>
             {passwords.map(password =>
-              <PasswordCard key={password.id} password={password} />
+              <PasswordCard key={password.id} password={password} onDelete={this.handleDelete} />
             )}
           </div>
         }
@@ -69,6 +69,8 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
       </div>
     )
   }
+
+  private handleDelete = (password: Password) => this.props.onDelete(password);
 }
 
 const StyledPasswordsPage = withStyles(styles)(PasswordsPage)

@@ -86,7 +86,7 @@ export default class PasswordsProvider extends React.Component<{}, PasswordsStat
     })
 
     Passwords.create(password).then(newPassword => {
-      openSnackbar('User created');
+      openSnackbar('Password created');
 
       this.setState({
         loading: false,
@@ -111,7 +111,7 @@ export default class PasswordsProvider extends React.Component<{}, PasswordsStat
     });
 
     Passwords.delete(password).then(() => {
-      openSnackbar('User deleted');
+      openSnackbar('Password deleted');
 
       this.setState((prev) => ({
         loading: false,

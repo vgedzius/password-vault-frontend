@@ -11,9 +11,11 @@ import LockIcon from '@material-ui/icons/Lock';
 import classNames from 'classnames';
 
 import { Password } from '../servises/Passwords';
+import { confirm } from './ConfirmDialog';
 
 export interface PasswordCardProps {
   password: Password;
+  onDelete: (password: Password) => void;
 }
 
 type ComponentClassNames = 
@@ -93,7 +95,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
               <IconButton aria-label="Edit">
                 <EditIcon />
               </IconButton>
-              <IconButton aria-label="Delete">
+              <IconButton aria-label="Delete" onClick={this.handleDeleteClick}>
                 <DeleteIcon />
               </IconButton>
               <IconButton aria-label="Coppy to clipboard">
@@ -104,7 +106,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
           <CardMedia
             className={classes.cover}
             image="http://placecage.com/c/250/250"
-            title="Live from space album cover" />
+            title={password.url} />
         </Card>
       </div>
     );
@@ -113,6 +115,11 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
   private handleMouseEnter = () => this.setState({ hover: true });
 
   private handleMouseLeave = () => this.setState({ hover: false });
+
+  private handleDeleteClick = () => {
+    confirm({ confirmation: 'Are you sure you want to delete this password?' })
+      .then(() => this.props.onDelete(this.props.password));
+  }
 }
 
 export default withStyles(styles)(PasswordCard)
