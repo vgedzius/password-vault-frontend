@@ -54,7 +54,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     flex: '1 0 auto',
   },
   cover: {
-    width: 151,
+    minWidth: 151,
   },
   controls: {
     display: 'flex',
