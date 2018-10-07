@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Main from './components/Main';
 import AuthProvider from './contexts/AuthContext';
 import UsersProvider from './contexts/UsersContext';
+import PasswordsProvider from './contexts/PasswordsContext';
 
 
 const theme = createMuiTheme({
@@ -22,7 +23,9 @@ class App extends React.Component {
         <BrowserRouter>
           <AuthProvider loadingComponent={<div>Loading...</div>}>
             <UsersProvider>
-              <Main />
+              <PasswordsProvider>
+                <Main />
+              </PasswordsProvider>
             </UsersProvider>
           </AuthProvider>
         </BrowserRouter>
