@@ -83,7 +83,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
         <Card
           raised={hover}
           className={classes.card}
-          onMouseEnter={this.handleMouseEnter}
+          onMouseOver={this.handleMouseOver}
           onMouseLeave={this.handleMouseLeave}>
 
           <div className={classes.details}>
@@ -112,7 +112,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
     );
   }
 
-  private handleMouseEnter = () => this.setState({ hover: true });
+  private handleMouseOver = () => this.setState({ hover: true });
 
   private handleMouseLeave = () => this.setState({ hover: false });
 
