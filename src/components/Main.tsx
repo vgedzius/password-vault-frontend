@@ -12,7 +12,7 @@ type ComponentClassNames =
 export const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
     flexGrow: 1,
-    height: window.innerHeight,
+    minHeight: window.innerHeight,
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',

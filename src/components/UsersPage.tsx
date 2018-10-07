@@ -32,7 +32,7 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
     padding: theme.spacing.unit * 3,
   },
   addButton: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: 0,
     right: 0,
     margin: theme.spacing.unit * 3,
