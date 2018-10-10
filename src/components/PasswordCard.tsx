@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LockIcon from '@material-ui/icons/Lock';
 import classNames from 'classnames';
+import * as CryptoJs from 'crypto-js';
 
 import { Password } from '../servises/Passwords';
 import { confirm } from './ConfirmDialog';
@@ -77,6 +78,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
   public render() {
     const { classes, password } = this.props;
     const { hover } = this.state;
+    const gravatar = `https://www.gravatar.com/avatar/${CryptoJs.MD5(password.url)}?d=robohash&s=300`;
 
     return (
       <div className={classes.root}>
@@ -105,7 +107,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
           </div>
           <CardMedia
             className={classes.cover}
-            image="http://placecage.com/c/250/250"
+            image={gravatar}
             title={password.url} />
         </Card>
       </div>

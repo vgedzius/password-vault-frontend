@@ -52,7 +52,7 @@ export default class Passwords {
 
   public static delete = async (password: Password) => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/Accounts/${password.id}`;
+      const url = `${process.env.REACT_APP_API_URL}/Passwords/${password.id}`;
       const response = await axios.delete(url);
       return response.data;
     } catch (error) {
