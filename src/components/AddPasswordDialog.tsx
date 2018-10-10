@@ -33,7 +33,7 @@ class AddPasswordDialog extends React.Component<AddPasswordDialogProps> {
         onClose={onClose}
         aria-labelledby="form-dialog-title">
         <ValidatorForm instantValidate onSubmit={this.handleSubmit} onError={this.handleError}>
-          <DialogTitle id="form-dialog-title">Add User</DialogTitle>
+          <DialogTitle id="form-dialog-title">Add Password</DialogTitle>
           <DialogContent>
             <TextValidator
               fullWidth
