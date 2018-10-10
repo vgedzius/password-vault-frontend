@@ -1,6 +1,6 @@
 declare module 'react-material-ui-form-validator' {
   import * as React from 'react';
-  import { TextFieldProps } from '@material-ui/core/TextField';
+  import { StandardTextFieldProps } from '@material-ui/core/TextField';
 
   export interface ValidatorFormProps {
     children?: React.ReactNode | React.ReactNodeArray;
@@ -10,7 +10,7 @@ declare module 'react-material-ui-form-validator' {
     onError?: (errors?: any[]) => void;
   }
 
-  export interface TextValidatorProps extends TextFieldProps {
+  export interface TextValidatorProps extends StandardTextFieldProps {
     errorMessages?: string[] | string;
     validators: any[];
     withRequiredValidator?: boolean;
