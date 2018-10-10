@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import LockIcon from '@material-ui/icons/Lock';
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 import classNames from 'classnames';
 import * as CryptoJs from 'crypto-js';
 
@@ -95,13 +97,19 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
             </CardContent>
             <div className={classNames(classes.controls, !hover && classes.hidden)}>
               <IconButton aria-label="Edit">
-                <EditIcon />
+                <Tooltip TransitionComponent={Zoom} title="Edit">
+                  <EditIcon />
+                </Tooltip>
               </IconButton>
               <IconButton aria-label="Delete" onClick={this.handleDeleteClick}>
-                <DeleteIcon />
+                <Tooltip TransitionComponent={Zoom} title="Delete">
+                  <DeleteIcon />
+                </Tooltip>
               </IconButton>
-              <IconButton aria-label="Coppy to clipboard">
-                <LockIcon />
+              <IconButton aria-label="Copy to clipboard">
+                <Tooltip TransitionComponent={Zoom} title="Copy to clipboard">
+                  <LockIcon />
+                </Tooltip>
               </IconButton>
             </div>
           </div>
