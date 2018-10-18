@@ -94,8 +94,8 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
 
           <div className={classes.details}>
             <CardContent className={classes.content}>
-              <Typography component="h2" variant="headline">{password.url}</Typography>
-              <Typography variant="subheading" color="textSecondary">{password.userName}</Typography>
+              <Typography component="h2" variant="h5">{password.url}</Typography>
+              <Typography variant="subtitle1" color="textSecondary">{password.userName}</Typography>
             </CardContent>
             <div className={classNames(classes.controls, !hover && classes.hidden)}>
               <IconButton aria-label="Edit" onClick={this.handleEditClick}>

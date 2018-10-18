@@ -86,7 +86,7 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
                 <MenuIcon />
               </IconButton>
             )}
-            <Typography variant="title" color="inherit" className={classes.grow}>Password Vault</Typography>
+            <Typography variant="h6" color="inherit" className={classes.grow}>Password Vault</Typography>
             {user && (
               <div>
                 <IconButton

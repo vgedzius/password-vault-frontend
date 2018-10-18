@@ -20,11 +20,11 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
 
 class PageHeader extends React.Component<PageHeaderProps & WithStyles<ComponentClassNames>> {
   public render() {
-    const { loading, classes } = this.props;
+    const { loading, classes, headline } = this.props;
 
     return (
       <React.Fragment>
-        <Typography variant="headline">Passwords</Typography>
+        <Typography variant="h4">{headline}</Typography>
         {loading ? <LinearProgress className={classes.progress} /> : <Divider />}
       </React.Fragment>
     );
