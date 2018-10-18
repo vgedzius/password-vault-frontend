@@ -7,12 +7,12 @@ import { PasswordsContext } from '../contexts/PasswordsContext';
 import { Password } from '../servises/Passwords';
 import PasswordCard from './PasswordCard';
 import PageHeader from './PageHeader';
-import AddPasswordDialog from './AddPasswordDialog';
+import PasswordDialog from './PasswordDialog';
 
 export interface PasswordsPageProps {
   loading: boolean;
   passwords: Password[];
-  onAddClick: () => void;
+  onAdd: () => void;
   onLoad: () => void;
   onDelete: (password: Password) => void;
 }
@@ -51,7 +51,7 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
   }
 
   public render() {
-    const { classes, loading, passwords, onAddClick } = this.props;
+    const { classes, loading, passwords } = this.props;
     return (
       <div className={classes.root}>
         <PageHeader headline="Passwords" loading={loading} />
@@ -62,15 +62,19 @@ class PasswordsPage extends React.Component<PasswordsPageProps & WithStyles<Comp
             )}
           </div>
         }
-        <Button className={classes.addButton} variant="fab" color="secondary" onClick={onAddClick}>
+        <Button className={classes.addButton} variant="fab" color="secondary" onClick={this.handleAddClick}>
           <AddIcon />
         </Button>
-        <AddPasswordDialog />
+        <PasswordDialog />
       </div>
     )
   }
 
   private handleDelete = (password: Password) => this.props.onDelete(password);
+
+  private handleAddClick = () => {
+    this.props.onAdd();
+  }
 }
 
 const StyledPasswordsPage = withStyles(styles)(PasswordsPage)
@@ -82,7 +86,7 @@ export default (props: any) => (
         {...props}
         loading={passwords.loading}
         passwords={passwords.passwords}
-        onAddClick={passwords.actions.openAddDialog}
+        onAdd={passwords.actions.openDialog}
         onDelete={passwords.actions.delete}
         onLoad={passwords.actions.load}
       />

@@ -10,17 +10,30 @@ import { openSnackbar } from './Notifier';
 import { Password } from '../servises/Passwords';
 import { PasswordsContext } from '../contexts/PasswordsContext';
 
-interface AddPasswordDialogProps {
+interface PasswordDialogProps {
   open: boolean;
+  password?: Password;
   onClose: () => void;
   onAdd: (password: Password) => void;
 }
 
-class AddPasswordDialog extends React.Component<AddPasswordDialogProps> {
+class PasswordDialog extends React.Component<PasswordDialogProps> {
   public state = {
     url: '',
     userName: '',
     password: '',
+  }
+
+  public component() {
+    const { password } = this.props;
+
+    if (password) {
+      this.setState({
+        url: password.url,
+        userName: password.userName,
+        password: password.password,
+      })
+    }
   }
 
   public render() {
@@ -102,10 +115,11 @@ class AddPasswordDialog extends React.Component<AddPasswordDialogProps> {
 export default (props: any) => (
   <PasswordsContext.Consumer>
     {(passwords) => (
-      <AddPasswordDialog
+      <PasswordDialog
         {...props}
-        open={passwords.addDialogOpen}
-        onClose={passwords.actions.closeAddDialog}
+        open={passwords.dialogOpen}
+        password={passwords.current}
+        onClose={passwords.actions.closeDialog}
         onAdd={passwords.actions.add}
       />
     )}

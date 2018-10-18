@@ -15,10 +15,12 @@ import * as CryptoJs from 'crypto-js';
 
 import { Password } from '../servises/Passwords';
 import { confirm } from './ConfirmDialog';
+import { PasswordsContext } from 'src/contexts/PasswordsContext';
 
 export interface PasswordCardProps {
   password: Password;
   onDelete: (password: Password) => void;
+  onEdit: (password: Password) => void;
 }
 
 type ComponentClassNames = 
@@ -96,7 +98,7 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
               <Typography variant="subheading" color="textSecondary">{password.userName}</Typography>
             </CardContent>
             <div className={classNames(classes.controls, !hover && classes.hidden)}>
-              <IconButton aria-label="Edit">
+              <IconButton aria-label="Edit" onClick={this.handleEditClick}>
                 <Tooltip TransitionComponent={Zoom} title="Edit">
                   <EditIcon />
                 </Tooltip>
@@ -130,6 +132,21 @@ class PasswordCard extends React.Component<PasswordCardProps & WithStyles<Compon
     confirm({ confirmation: 'Are you sure you want to delete this password?' })
       .then(() => this.props.onDelete(this.props.password));
   }
+
+  private handleEditClick = () => {
+    this.props.onEdit(this.props.password);
+  }
 }
 
-export default withStyles(styles)(PasswordCard)
+const StyledPasswordCard = withStyles(styles)(PasswordCard)
+
+export default (props: any) => (
+  <PasswordsContext.Consumer>
+    {(passwords) => (
+      <StyledPasswordCard
+        {...props}
+        onEdit={passwords.actions.openDialog}
+      />
+    )}
+  </PasswordsContext.Consumer>
+);
