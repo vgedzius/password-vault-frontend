@@ -17,23 +17,32 @@ interface PasswordDialogProps {
   onAdd: (password: Password) => void;
 }
 
-class PasswordDialog extends React.Component<PasswordDialogProps> {
+interface PasswordDialogState {
+  id?: string;
+  url: string;
+  userName: string;
+  password: string;
+}
+
+class PasswordDialog extends React.Component<PasswordDialogProps, PasswordDialogState> {
+
+  public static getDerivedStateFromProps(props: PasswordDialogProps, state: PasswordDialogState) {
+    if (props.password && (props.password.id !== state.id)) {
+      const { password } = props;
+      return password;
+    }
+
+    return {
+      url: '',
+      userName: '',
+      password: '',
+    }
+  }
+
   public state = {
     url: '',
     userName: '',
     password: '',
-  }
-
-  public component() {
-    const { password } = this.props;
-
-    if (password) {
-      this.setState({
-        url: password.url,
-        userName: password.userName,
-        password: password.password,
-      })
-    }
   }
 
   public render() {
@@ -45,7 +54,7 @@ class PasswordDialog extends React.Component<PasswordDialogProps> {
         open={open}
         onClose={onClose}
         aria-labelledby="form-dialog-title">
-        <ValidatorForm instantValidate onSubmit={this.handleSubmit} onError={this.handleError}>
+        <ValidatorForm key={this.props.password && this.props.password.id} instantValidate onSubmit={this.handleSubmit} onError={this.handleError}>
           <DialogTitle id="form-dialog-title">Add Password</DialogTitle>
           <DialogContent>
             <TextValidator
