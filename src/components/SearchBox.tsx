@@ -3,6 +3,7 @@ import { withStyles, StyleRulesCallback, Theme, WithStyles } from '@material-ui/
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 type ComponentClassNames =
   | 'search'
@@ -54,9 +55,13 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
   },
 })
 
-class SearchBox extends React.Component<WithStyles<ComponentClassNames>> {
+class SearchBox extends React.Component<RouteComponentProps & WithStyles<ComponentClassNames>> {
+  public state = {
+    value: '',
+  }
   public render() {
     const { classes } = this.props;
+    const { value } = this.state;
 
     return (
       <div className={classes.search}>
@@ -65,6 +70,8 @@ class SearchBox extends React.Component<WithStyles<ComponentClassNames>> {
         </div>
         <InputBase
           placeholder="Search…"
+          value={value}
+          onChange={this.handleChange}
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput,
@@ -73,6 +80,18 @@ class SearchBox extends React.Component<WithStyles<ComponentClassNames>> {
       </div>
     );
   }
+
+  private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { history } = this.props;
+
+    this.setState({
+      value: event.currentTarget.value
+    });
+
+    if (history.location.pathname !== '/') {
+      history.push('/');
+    }
+  };
 }
 
-export default withStyles(styles)(SearchBox);
+export default withRouter(withStyles(styles)(SearchBox));
