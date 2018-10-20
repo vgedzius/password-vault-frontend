@@ -15,6 +15,7 @@ interface PasswordDialogProps {
   password?: Password;
   onClose: () => void;
   onAdd: (password: Password) => void;
+  onEdit: (password: Password) => void;
 }
 
 interface PasswordDialogState {
@@ -30,16 +31,20 @@ class PasswordDialog extends React.Component<PasswordDialogProps, PasswordDialog
     if (props.password && (props.password.id !== state.id)) {
       const { password } = props;
       return password;
+    } else if (!props.password) {
+      return {
+        id: undefined,
+        url: '',
+        userName: '',
+        password: '',
+      }
     }
 
-    return {
-      url: '',
-      userName: '',
-      password: '',
-    }
+    return null;
   }
 
   public state = {
+    id: undefined,
     url: '',
     userName: '',
     password: '',
@@ -54,8 +59,8 @@ class PasswordDialog extends React.Component<PasswordDialogProps, PasswordDialog
         open={open}
         onClose={onClose}
         aria-labelledby="form-dialog-title">
-        <ValidatorForm key={this.props.password && this.props.password.id} instantValidate onSubmit={this.handleSubmit} onError={this.handleError}>
-          <DialogTitle id="form-dialog-title">Add Password</DialogTitle>
+        <ValidatorForm instantValidate onSubmit={this.handleSubmit} onError={this.handleError}>
+          <DialogTitle id="form-dialog-title">{this.props.password ? this.props.password.url : 'Add Password'}</DialogTitle>
           <DialogContent>
             <TextValidator
               fullWidth
@@ -92,9 +97,9 @@ class PasswordDialog extends React.Component<PasswordDialogProps, PasswordDialog
           <DialogActions>
             <Button onClick={onClose} variant="outlined" color="default">
               Cancel
-              </Button>
+            </Button>
             <Button type="submit" variant="contained" color="primary">
-              Add
+              {this.props.password ? 'Save' : 'Add'}
             </Button>
           </DialogActions>
         </ValidatorForm>
@@ -115,9 +120,13 @@ class PasswordDialog extends React.Component<PasswordDialogProps, PasswordDialog
 
   private handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { url, userName, password } = this.state;
+    const { id, url, userName, password } = this.state;
 
-    this.props.onAdd({ url, userName, password });
+    if (id) {
+      this.props.onEdit({ id, url, userName, password });
+    } else {
+      this.props.onAdd({ url, userName, password });
+    }
   }
 }
 
@@ -130,6 +139,7 @@ export default (props: any) => (
         password={passwords.current}
         onClose={passwords.actions.closeDialog}
         onAdd={passwords.actions.add}
+        onEdit={passwords.actions.update}
       />
     )}
   </PasswordsContext.Consumer>
