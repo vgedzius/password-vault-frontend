@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
@@ -18,7 +19,7 @@ import { User } from '../servises/Users';
 import { MAIN_MENU_WIDTH } from '../config';
 import MainMenu from './MainMenu';
 import UserAvatar from './UserAvatar';
-import { CircularProgress } from '@material-ui/core';
+import SearchBox from './SearchBox';
 
 type ComponentClassNames =
   | 'root'
@@ -88,33 +89,36 @@ class Header extends React.Component<HeaderProps & WithStyles<ComponentClassName
             )}
             <Typography variant="h6" color="inherit" className={classes.grow}>Password Vault</Typography>
             {user && (
-              <div>
-                <IconButton
-                  aria-owns={open ? 'menu-appbar' : undefined}
-                  aria-haspopup="true"
-                    onClick={this.openUserMenu}
-                  color="inherit"
-                >
-                  {loading ? <CircularProgress color='inherit' /> : <UserAvatar user={user} />}
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                    onClose={this.closeUserMenu}
-                >
-                    <MenuItem onClick={this.closeUserMenu} component={AccountLink}>Account</MenuItem>
-                  <MenuItem onClick={this.logout}>Logout</MenuItem>
-                </Menu>
-              </div>
+              <React.Fragment>
+                <SearchBox />
+                <div>
+                  <IconButton
+                    aria-owns={open ? 'menu-appbar' : undefined}
+                    aria-haspopup="true"
+                      onClick={this.openUserMenu}
+                    color="inherit"
+                  >
+                    {loading ? <CircularProgress color='inherit' /> : <UserAvatar user={user} />}
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={open}
+                      onClose={this.closeUserMenu}
+                  >
+                      <MenuItem onClick={this.closeUserMenu} component={AccountLink}>Account</MenuItem>
+                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                  </Menu>
+                </div>
+              </React.Fragment>
             )}
           </Toolbar>
         </AppBar>
