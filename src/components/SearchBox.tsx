@@ -5,6 +5,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { withRouter, RouteComponentProps } from 'react-router';
 
+import { PasswordsContext } from '../contexts/PasswordsContext';
+
+interface SearchBoxProps extends RouteComponentProps {
+  onSearch: (term: string) => void;
+}
+
 type ComponentClassNames =
   | 'search'
   | 'searchIcon'
@@ -55,7 +61,7 @@ export const styles: StyleRulesCallback = (theme: Theme) => ({
   },
 })
 
-class SearchBox extends React.Component<RouteComponentProps & WithStyles<ComponentClassNames>> {
+class SearchBox extends React.Component<SearchBoxProps & WithStyles<ComponentClassNames>> {
   public state = {
     value: '',
   }
@@ -82,16 +88,28 @@ class SearchBox extends React.Component<RouteComponentProps & WithStyles<Compone
   }
 
   private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { history } = this.props;
+    const { history, onSearch } = this.props;
+    const value = event.currentTarget.value;
 
-    this.setState({
-      value: event.currentTarget.value
-    });
+    this.setState({ value });
 
     if (history.location.pathname !== '/') {
       history.push('/');
     }
+
+    onSearch(value);
   };
 }
 
-export default withRouter(withStyles(styles)(SearchBox));
+const EnhancedSearchBox = withRouter(withStyles(styles)(SearchBox));
+
+export default (props: any) => (
+  <PasswordsContext.Consumer>
+    {(passwords) => (
+      <EnhancedSearchBox
+        {...props}
+        onSearch={passwords.actions.search}
+      />
+    )}
+  </PasswordsContext.Consumer>
+);

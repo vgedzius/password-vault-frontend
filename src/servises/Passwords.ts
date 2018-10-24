@@ -59,4 +59,17 @@ export default class Passwords {
       throw error.response.data.error;
     }
   }
+
+  public static search = async (term: string) => {
+    try {
+      const url = term
+        ? `${process.env.REACT_APP_API_URL}/Passwords/search?s=${term}`
+        : `${process.env.REACT_APP_API_URL}/Passwords`;
+      
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      throw error.response.data.error;
+    }
+  }
 }

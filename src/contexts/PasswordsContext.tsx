@@ -3,6 +3,25 @@ import * as React from 'react';
 import { openSnackbar } from '../components/Notifier';
 import Passwords, { Password } from '../servises/Passwords';
 
+interface PasswordsContextActions {
+  actions: {
+    openDialog: (password?: Password) => void,
+    closeDialog: () => void,
+    add: (password: Password) => void,
+    delete: (password: Password) => void,
+    update: (password: Password) => void,
+    load: () => void,
+    search: (term: string) => void,
+  }
+}
+
+interface PasswordsState {
+  loading: boolean;
+  dialogOpen: boolean;
+  current?: Password;
+  passwords: Password[];
+}
+
 export const PasswordsContext = React.createContext<PasswordsState & PasswordsContextActions>({
   loading: false,
   dialogOpen: false,
@@ -13,27 +32,10 @@ export const PasswordsContext = React.createContext<PasswordsState & PasswordsCo
     add: () => { },
     delete: () => { },
     update: () => { },
-    load: () => { }
+    load: () => { },
+    search: () => { },
   }
 });
-
-interface PasswordsContextActions {
-  actions: {
-    openDialog: (password?: Password) => void,
-    closeDialog: () => void,
-    add: (password: Password) => void,
-    delete: (password: Password) => void,
-    update: (password: Password) => void,
-    load: () => void,
-  }
-}
-
-interface PasswordsState {
-  loading: boolean;
-  dialogOpen: boolean;
-  current?: Password;
-  passwords: Password[];
-}
 
 export default class PasswordsProvider extends React.Component<{}, PasswordsState> {
   public state = {
@@ -53,6 +55,7 @@ export default class PasswordsProvider extends React.Component<{}, PasswordsStat
         delete: this.delete,
         update: this.update,
         load: this.load,
+        search: this.search,
       }
     }
 
@@ -164,5 +167,22 @@ export default class PasswordsProvider extends React.Component<{}, PasswordsStat
         loading: false,
       });
     });
+  }
+
+  private search = (term: string) => {
+    this.setState({ loading: true });
+
+    Passwords.search(term)
+      .then((passwords) => this.setState({
+        loading: false,
+        passwords
+      }))
+      .catch((error) => {
+        openSnackbar(error.message);
+
+        this.setState({
+          loading: false,
+        })
+      });
   }
 }
